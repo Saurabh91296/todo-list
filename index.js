@@ -1,7 +1,9 @@
 var express=require('express');
 var todos_db=require("./seed.js");
 var app=express();
+var bodyParser=require('body-parser');
 
+app.use("/", bodyParser.urlencoded({extended:false}));
 
 app.use("/", function(req, res, next){
     console.log("Request");
@@ -54,63 +56,36 @@ app.get("/api/todos/deleted",function (req,res) {
     res.json(todos_deleted);
 });
 
-app.delete("/api/todos/:id",function (req,res) {
-   var del_id=req.params.id;
-   var todo=todos_db.todos[del_id];
-   if(!todo){
-       res.status(400).json({err:"todo doesn't exist"});
-   }
-   else{
-       todo.status=todos_db.StatusENUMS.DELETED;
-       res.json(todos_db);
-   }
-});
-
-
 app.post("/api/todos", function(req, res){
+    if (!req.body.todo_title){
+        res.status(400).json({err: "Todo Title Missing"});
 
-    // Expect a title in the body of the request
-    // in the x-www-form-urlencoded format
-    // in the style
-    //todo_title=<the new title>
-
-    var todo = req.body.todo_title;
-
-    // if you don't send a todo_title
-
-    if (!todo || todo == "" || todo.trim() == ""){
-        res.status(400).json({error : "Todo Title Can't Be Empty"});
     }
 
     else {
 
+
+
+        todo_title = req.body.todo_title;
         var new_todo_object = {
-            title : req.body.todo_title,
+            title : todo_title,
             status : todos_db.StatusENUMS.ACTIVE
         }
-
         todos_db.todos[todos_db.next_todo_id++] = new_todo_object;
-
         res.json(todos_db.todos);
-
     }
 
 })
 
-
-
-
-
 // 4. complete a todo - that's like modifying
 // http://localhost:4000/todos/:id PUT
-
 
 app.put("/api/todos/:id", function(req, res) {
 
 
     // todos_db
     // todos_db.data = {id : {title:, status:} , id : {title:, status:}
-
+    console.log(req.body);
     var mod_id = req.params.id;
     var todo = todos_db.todos[mod_id];
     // if this todo doesn't exist
@@ -138,11 +113,23 @@ app.put("/api/todos/:id", function(req, res) {
             todo.status = todo_status;
         }
 
+       // console.log(todos_db.todos);
         res.json(todos_db.todos);
     }
 
 
 });
 
+app.delete("/api/todos/:id",function (req,res) {
+    var del_id=req.params.id;
+    var todo=todos_db.todos[del_id];
+    if(!todo){
+        res.status(400).json({err:"todo doesn't exist"});
+    }
+    else{
+        todo.status=todos_db.StatusENUMS.DELETED;
+        res.json(todos_db.todos);
+    }
+});
 
-app.listen(4001);
+app.listen(4000);

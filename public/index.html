@@ -3,12 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>TODO APP</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>My Todo List</h1>
-<button  onclick="getTodosAJAX()">Get Todos</button>
-<div id="todos_list_div">
+<div class="container">
+<div id="title_div">
+    <h1 style="padding-top: 20px">My Todos</h1>
+</div>
+<div id="active_div" class="partition">
+    <h3 style="margin-left: 20%">Active Todos</h3>
+    <div style="margin-bottom: 10px" id="active_list_div">
 
+    </div>
+</div>
+<div id="add_todo_div" class="partition">
+  <div style="margin-bottom: 10px">
+      <h3 style="margin-left: 20%;color:gray" >Add Todo</h3>
+
+      <input class="add-todo-input" id="new_todo_title_input" name="todo_title" type="text" placeholder="Todo Title Goes Here">
+      <button class="add_todo-button" onclick="add_todo_form_submit()">ADD</button>
+  </div>
+
+</div>
+<div id="complete_div" class="partition">
+    <h3 style="margin-left: 20% ;display: inline-block">Completed Todos</h3><button class="hyper_link" id="hide_button_complete" onclick="hideandshowComplete('hide_button_complete')">Hide Completed Items</button>
+    <div style="margin-bottom: 10px" id="complete_list_div">
+
+    </div>
+</div>
+<div id="deleted_div" class="partition">
+    <h3 style="margin-left: 20%;display: inline-block">Deleted Todos</h3><button class="hyper_link" id="hide_button_deleted" onclick="hideandshowDeleted('hide_button_deleted')">Hide Deleted Items</button>
+    <div style="margin-bottom: 10px" id="deleted_list_div">
+
+    </div>
+</div>
 </div>
 <script src="/script.js" type="text/javascript"></script>
 </body>
